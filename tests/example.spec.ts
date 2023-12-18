@@ -9,6 +9,10 @@ test('Same PDF comparison', async() => {
   const context = await browser.newContext();
   const page = await context.newPage();
   const filePath = path.join(__dirname, 'index.html');
+  page.setViewportSize({
+    width: 1200,
+    height: 2000
+  })
   await page.goto(`file://${filePath}`)
   const iframe = await page.$('iframe');
   await iframe?.evaluate(() => {
@@ -17,15 +21,7 @@ test('Same PDF comparison', async() => {
   });
   await page.waitForTimeout(5000);
   await page.screenshot({
-    path: "screenshots/pageScreenshotDefaultViewPort.png",
-  });
-  page.setViewportSize({
-    width: 1980,
-    height: 3000
-  })
-  await page.waitForTimeout(5000);
-  await page.screenshot({
     path: "screenshots/pageScreenshotAfterViewPort.png",
   });
-  // expect(await page.screenshot()).toMatchSnapshot();
+  expect(await page.screenshot()).toMatchSnapshot();
 })
